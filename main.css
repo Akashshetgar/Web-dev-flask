@@ -97,3 +97,31 @@ footer{
     padding:20px;
     color:aliceblue
 }
+
+
+/* Contact US css */
+.contact{
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+}
+.contact h1{
+    text-align: center;
+    color:  white;
+    margin-bottom: 30px;
+}
+.link-content{
+    text-align: center;
+    padding: 20px;
+}
+.link{
+    font-size: xx-large;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    
+}
+.link:hover{
+    color: white;
+    text-decoration: underline;
+}
