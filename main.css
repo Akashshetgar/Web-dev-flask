@@ -29,7 +29,7 @@ img{
     justify-content: center;
     margin: auto;
     list-style-type: none;
-    margin-right: 500px;
+    margin-right: 525px;
 }
 .navElem{
     padding: 10px;
@@ -124,4 +124,25 @@ footer{
 .link:hover{
     color: white;
     text-decoration: underline;
+}
+
+/* Register css*/
+
+.formContainer{
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 5px;
+    background-color: aliceblue;
+    backdrop-filter: blur(5px);
+    width: 400px;
+    background-color: rgba(146, 201, 252, 0.144);
+}
+label{
+    color: azure;
+}
+.buttonDiv{
+    text-align: center;
+}
+.classLogo{
+    justify-content: center;
 }
