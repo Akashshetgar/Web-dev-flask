@@ -1,0 +1,99 @@
+.mainSec-1{
+    background-image: url("./images/bg2.png");
+    /* background-color: rgb(14, 33, 61); */
+    width:100%;
+    height:auto;
+    background-size: cover;
+}
+.logo{
+    margin: 0;
+}
+nav{
+    width: 100%;
+    height: 15vh;
+    background-color: rgb(14, 33, 61);
+    line-height: 50px;
+    display: flex;
+    margin:auto;
+}
+img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+.nav-item{
+    color: aliceblue;
+}
+.navbarContainer{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    list-style-type: none;
+    margin-right: 500px;
+}
+.navElem{
+    padding: 10px;
+    color: aliceblue;
+    text-decoration: none;
+    font-size: 4vh;
+    
+    top: 50%;
+    margin-top: 25px;
+}
+.navElem:hover{
+    animation: change 1s linear infinite;
+}
+@keyframes change{
+    0%{color: aliceblue;}
+    33%{color: blueviolet;}
+    66%{color: rgb(216, 33, 79);}
+    100%{color: aquamarine;}
+}
+.mainText{
+    font-family: 'BioRhyme', serif;
+    color: aliceblue;
+    text-align: center;
+}
+.mainTextHeading{
+    
+    font-size: xxx-large;
+}
+.mainTextBody{
+    font-size: large;
+
+}
+.loginButton{
+    font-family: 'BioRhyme', serif;
+    text-align: center;
+}
+.sec-1Imgs{
+    display: flex;
+    justify-content: center;
+}
+.imgRight{
+    float: bottom;
+    margin-left: 100px;
+    right: 0%;
+}
+.imgLeft{
+    float: bottom;
+    float: left;
+    padding:0%
+}
+footer{
+    background-color: rgb(31, 31, 31);
+    font-family: 'BioRhyme', serif;
+}
+.socialMedia{
+    display: flex;
+    justify-content: center;
+}
+.footerHeading{
+    text-align: center;
+    font-size: large;
+    color: antiquewhite;
+}
+.footerIcon{
+    padding:20px;
+    color:aliceblue
+}
