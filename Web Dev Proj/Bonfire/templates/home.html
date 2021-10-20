@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}
+  Bonfire
+{% endblock %}
+{% block content %}
+  <div class = "mainText">
+    <p class = 'mainTextHeading'>Create and Join your favourite community</p>
+    <div class="loginButton">
+      <button type="button" class="btn btn-outline-warning btn-lg"><a href="{{ url_for('loginPage') }}"">Login</a></button>
+    </div>
+    <br>
+    <p class="mainTextBody"> text line 1</p>
+    <p class="mainTextBody"> text line 2</p>
+    <p class="mainTextBody"> text line 3</p>
+    <p class="mainTextBody"> text line 4</p>
+
+    
+  </div>
+  <div class="sec-1Imgs">
+    
+    <div class="imgLeft">
+      <img src="/static/images/sofacat.png" alt=""> 
+    </div>
+    <div class="imgRight">
+      <img src="/static/images/sofa.png" alt="">
+    </div>
+  </div>
+{% endblock %}
