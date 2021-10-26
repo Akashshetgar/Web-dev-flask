@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}
+  Bonfire <!-- dynamically change to group name-->
+{% endblock %}
+{% block content %}
+<h2></h2><!--Enter name of selected community-->
+<div class="row">
+    <div class="col-3">
+        <h3>Rooms</h3>
+
+    </div>
+    <div class="col-6">
+        <h3></h3>
+        <form style="display: flex;">
+            <div class="mb-3">
+              <input type="text" class="form-control" id="text" >
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-telegram"></i></button>
+        </form>
+    </div>
+    <div class="col-3">
+        <h3>Members</h3>
+
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+    
+    var socket = io();
+    socket.on('connect', function() {
+        socket.emit('join_room', {
+            username:"{{username}}",
+            room: "{{room}}"
+        });
+    });
+</script>
+
+  
+{% endblock %}
+{% block scripts %} 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+<script type="text/javascript" charset="utf-8">
+    
+    var socket = io();
+    socket.on('connect', function() {
+        socket.emit('join_room', {
+            username:"{{username}}",
+            room: "{{room}}"
+        });
+    });
+</script>
+{% endblock %}

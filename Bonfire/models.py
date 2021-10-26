@@ -24,4 +24,12 @@ class User(db.Model, UserMixin):
 
     def checkpswrd(self, attempted_pswrd):
         return bcrypt.check_password_hash(self.password_hash,attempted_pswrd)
-    
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    community_name = db.Column(db.String(length = 100))
+    channel_name = db.Column(db.String(length = 100))
+    date_posted = db.Column(db.String(length = 30))
+    time_posted = db.Column(db.String(length = 30))
+    name = db.Column(db.String(length = 100), default='')
+    content = db.Column(db.String(length = 500), default='')  

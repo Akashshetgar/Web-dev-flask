@@ -1,6 +1,7 @@
 from flask.templating import DispatchingJinjaLoader
 from flask_login.utils import login_required
-from Bonfire import app, db
+import socketio
+from Bonfire import app, db, socketio
 from flask import render_template, url_for, redirect, flash
 from Bonfire.forms import RegistrationForm, LoginForm
 from Bonfire.models import *
@@ -60,3 +61,7 @@ def loginPage():
 def logoutPage():
     logout_user()
     return redirect(url_for("homePage"))
+
+@socketio.on('join_room')
+def joinRoom(data):
+    pass
