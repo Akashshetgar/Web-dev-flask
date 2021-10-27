@@ -33,3 +33,8 @@ class Message(db.Model):
     time_posted = db.Column(db.String(length = 30))
     name = db.Column(db.String(length = 100), default='')
     content = db.Column(db.String(length = 500), default='')  
+
+
+class Communities(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    community_name = db.Column(db.String(length = 100))

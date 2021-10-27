@@ -2,11 +2,11 @@ from flask.templating import DispatchingJinjaLoader
 from flask_login.utils import login_required
 import socketio
 from Bonfire import app, db, socketio
-from flask import render_template, url_for, redirect, flash
+from flask import render_template, url_for, redirect, flash,request
 from Bonfire.forms import RegistrationForm, LoginForm
 from Bonfire.models import *
 from flask_login import login_user, logout_user
-
+from flask_socketio import SocketIO,send
 
 @app.route("/")
 @app.route("/home")
@@ -24,8 +24,18 @@ def featuresPage():
 @app.route("/communities")
 @login_required
 def communitiesPage():
-    return render_template("communities.html")
+    allcmty = Communities.query.all()
+    return render_template("communities.html",communities=allcmty)
 
+@app.route("/addcommunity",methods= ['GET','POST'])
+@login_required
+def addcommunity():
+    if request.method=='POST':
+        check = Communities(community_name=request.form.get("c_name"))
+        db.session.add(check)
+        db.session.commit()
+        return redirect(url_for('communitiesPage'))
+    return render_template("addcommunity.html")
 
 
 @app.route("/register", methods = ['GET','POST'])
@@ -62,6 +72,12 @@ def logoutPage():
     logout_user()
     return redirect(url_for("homePage"))
 
-@socketio.on('join_room')
-def joinRoom(data):
-    pass
+@socketio.on('message')
+def message(data):
+    print(f"\n\n{data}\n\n")
+    send(data)
+
+@app.route("/chat/<int:no>")
+def chat(no):
+    chat_community = Communities.query.filter_by(id=no).first()
+    return render_template("chat1.html",ch_no=chat_community)

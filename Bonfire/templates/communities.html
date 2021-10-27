@@ -6,5 +6,10 @@
 <br><br><br>
   <div>
       <h1>Browse through communities and join them!</h1>
+      <a href="{{ url_for('addcommunity') }}">Add your community</a><br>
+      <h1 style="color: white;">All communities</h1>
+      {% for x in communities %}
+        <a href="/chat/{{x.id}}"><h1 style="color: white;">{{x.community_name}}</h1></a>
+      {% endfor %}
   </div>
 {% endblock %}
