@@ -1,6 +1,7 @@
+from abc import ABCMeta
 from flask_wtf import FlaskForm
 from wtforms import StringField,PasswordField
-from wtforms.fields.core import Label
+from wtforms.fields.core import IntegerField, Label
 from wtforms.fields.simple import SubmitField
 from wtforms.validators import Length,DataRequired,Email,EqualTo, ValidationError
 from Bonfire.models import User
@@ -24,3 +25,21 @@ class LoginForm(FlaskForm):
     username = StringField(label='Username', validators= [DataRequired()])
     password = PasswordField(label='Password', validators=[DataRequired()])
     login = SubmitField(label='Login')
+
+class CreateCommunityForm(FlaskForm):
+    community_name = StringField(label='Community name', validators= [Length(min=3,max=40),DataRequired()])
+    community_description = StringField(label='Community description', validators= [Length(min=3,max=100),DataRequired()])
+    community_admin = StringField(label='community_admin', validators= [DataRequired()], )
+    create = SubmitField(label='Create')
+
+class DeleteCommunityForm(FlaskForm):
+    toBeDeleted = IntegerField(label='Community id', validators= [DataRequired()])
+    delete = SubmitField(label='Delete')
+
+class LeaveCommunityForm(FlaskForm):
+    toBeLeft = IntegerField(label='Community id', validators= [DataRequired()])
+    leave = SubmitField(label='Leave')
+
+class JoinCommunityForm(FlaskForm):
+    toBeAdded = IntegerField(label='Community id', validators= [DataRequired()])
+    join = SubmitField(label='Join')

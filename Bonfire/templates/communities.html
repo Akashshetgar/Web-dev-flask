@@ -3,13 +3,103 @@
   Communities
 {% endblock %}
 {% block content %}
-<br><br><br>
+{% with messages = get_flashed_messages(with_categories = true) %}
+  {% if messages %}
+    {% for category,message in messages%}
+      
+      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+      </div>
+    {% endfor%}
+  {% endif %}
+{% endwith %}
+
+<br><br>
+<div class="startChatBtn">
+  <button class="btn btn-info btn-lg" style="margin-bottom: 5px;">
+    <a href="{{ url_for('chat') }}"">Start chatting!</a>  
+  </button>
+</div>
+
+<br>
   <div>
-      <h1>Browse through communities and join them!</h1>
-      <a href="{{ url_for('addcommunity') }}">Add your community</a><br>
-      <h1 style="color: white;">All communities</h1>
-      {% for x in communities %}
-        <a href="/chat/{{x.id}}"><h1 style="color: white;">{{x.community_name}}</h1></a>
-      {% endfor %}
+      <h1 style="color: white; text-align: center;">Browse through communities and join them!</h1>
+      <div class="col">
+        <br>
+        <br>
+        <h2 style="color: white; text-align: center;">Your communities</h2>
+        <div class="row">
+          
+          {% for community in user_communities %}
+          {% include './includes/delete_community_modal.html' %}
+          {% include './includes/leave_community_modal.html' %}
+              
+              <div class = "col-sm-3">
+                <div style="margin-bottom: 5px" class="card text-center bg-dark">
+                  <div class="card-body" style="background-color: rgba(83, 172, 255, 0.288); border-radius: 5px;">
+                      <h5 class="card-title" style="color:rgb(245, 241, 0); text-align: center;font-weight: bolder;">{{community.community_name}}</h5>
+                      <p class="card-text" style="color: aliceblue; text-align: center;"><em>{{community.community_description}}</em></p>
+                      
+                      {% if community.community_admin == current_user.id %}
+                        <button type="button" class="btn btn-danger" style="margin-bottom: 5px" data-toggle="modal" data-target="#Modal-DeleteCommunity-{{community.id}}">
+                          Delete
+                        </button>
+                      {% else %}
+                        <button type="button" class="btn btn-danger" style="margin-bottom: 5px" data-toggle="modal" data-target="#Modal-LeaveCommunity-{{community.id}}">
+                          Leave
+                        </button>
+                      {% endif %}
+                  </div>
+                </div>
+              </div>
+            
+          {% endfor %}
+          {% if not user_communities %}
+              <br>
+              <h4 style="color: rgb(255, 238, 81); text-align: center;"> No communities found!</h4>
+              <br>
+          {% endif %}
+        </div>
+        <br>
+        <h2 style="color: white; text-align: center;">Explore other communities</h2>
+        <div class="row">
+          
+          {% for x in communities %}
+          {% include './includes/join_community_modal.html' %}
+            {% if current_user not in x.members %}
+              <div class = "col-sm-3">
+                <div style="margin-bottom: 5px" class="card text-center bg-dark">
+                  <div class="card-body" style="background-color: rgba(83, 172, 255, 0.288); border-radius: 5px;">
+                      <h5 class="card-title" style="color:rgb(245, 241, 0); text-align: center;">{{x.community_name}}</h5>
+                      <p class="card-text" style="color: aliceblue; text-align: center;"><em>{{x.community_description}}</em></p>
+                      <button type="button" class="btn btn-success" style="margin-bottom: 5px" data-toggle="modal" data-target="#Modal-JoinCommunity-{{x.id}}">
+                        Join
+                      </button>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+            
+          {% endfor %}
+          {% if not communities %}
+              <br>
+              <h4 style="color: rgb(255, 238, 81); text-align: center;"> No communities found!</h4>
+              <br>
+          {% endif %}
+          
+          
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="createBtn">
+        {% include './includes/community_modal.html' %}
+        <button class="btn btn-primary" data-toggle="modal" data-target="#Modal-CreateCommunity-{{current_user.id}}">Create Community</button>
+      </div>
+      <br>
+      <br>
+
   </div>
 {% endblock %}

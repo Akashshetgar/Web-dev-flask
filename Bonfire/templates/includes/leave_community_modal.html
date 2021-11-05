@@ -1,0 +1,41 @@
+<style>
+    .modal-content {
+      background-color: #212121
+    }
+</style>
+    
+    <!-- Leave community model-->
+    <div class="modal fade" id="Modal-LeaveCommunity-{{community.id}}"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title" id="ModalLabel">
+         <!-- -->
+       </h5>
+       <button type="button" class="close"
+               data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+         <form method="POST">
+             {{ leaveForm.hidden_tag() }}
+             <h3 class="text-center" style="color: aliceblue;">
+               Are you sure you want to leave {{ community.community_name }}?
+             </h3>
+           
+             <br>
+             <input id="toBeLeft" name="toBeLeft" type="hidden" value= {{community.id}}>
+             {{ leaveForm.leave(class = "btn btn-danger btn-block") }}
+         </form>
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-secondary"
+               data-dismiss="modal">Close
+       </button>
+     </div>
+   </div>
+ </div>
+</div>

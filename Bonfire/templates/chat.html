@@ -1,53 +1,69 @@
 {% extends 'base.html' %}
 {% block title %}
-  Bonfire <!-- dynamically change to group name-->
+  {{room}} 
 {% endblock %}
 {% block content %}
-<h2></h2><!--Enter name of selected community-->
+{% if user_communities %}
+<h2></h2>
+<!--Flash error messages here-->
 <div class="row">
-    <div class="col-3">
-        <h3>Rooms</h3>
+    <div class="col-3" id="rightside-pannel" style="color: aliceblue;">
+        <h3 class="text-warning" style=" text-align: center;">Rooms</h3>
+        {% for community in user_communities %}
+              
+              <div class = "col">
+                      <p id="room_select"  class="bg-info community-cards" >
+                        {{community.community_name}}
+                      </p>
+              </div>
+            
+        {% endfor %}
 
     </div>
     <div class="col-6">
-        <h3></h3>
-        <form style="display: flex;">
-            <div class="mb-3">
-              <input type="text" class="form-control" id="text" >
+        <h3 id="grpName" style="font-family: 'BioRhyme', serif;color: aliceblue;text-align: center;"></h3>
+        <div id="display-message-section" style="background-color: aliceblue;min-height: 200px;border-radius: 10px;">
+            
+        </div>
+        <br>
+        <!-- Display message end -->
+
+        <!-- Type message start -->
+       <div id="input-area" class="input-group mb-3">
+            <input type="text" id="user_message" class="form-control" placeholder="Type here..." aria-label="Type a message" aria-describedby="basic-addon2" autocomplete="off">
+            <div class="input-group-append">
+                <button id="send_message" class="btn btn-warning" type="submit"><i class="fas fa-paper-plane"></i></button>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="bi bi-telegram"></i></button>
-        </form>
+        </div>
+       
     </div>
-    <div class="col-3">
-        <h3>Members</h3>
+    <div class="col-3" id="leftside-pannel" style="color: aliceblue;">
+        <h3 class="text-warning" style=" text-align: center;">Members Online</h3>
 
     </div>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-<script type="text/javascript" charset="utf-8">
-    
-    var socket = io();
-    socket.on('connect', function() {
-        socket.emit('join_room', {
-            username:"{{username}}",
-            room: "{{room}}"
-        });
-    });
+<script type="text/javascript">
+    const username = `{{ username|e }}`
 </script>
-
+{% else %}
+<div class="aloneImg">
+    <img src="../static/images/alone walking.png">
+</div>
+<br>
+<br>
+<div class="aloneText">
+    <h3>It is quite lonely here....</h3>
+    <h3>Join some <a href="{{url_for('communitiesPage')}}">communities!</a></h3>
+    
+</div>
+<br>
+<br>
+{% endif %}
   
 {% endblock %}
 {% block scripts %} 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-<script type="text/javascript" charset="utf-8">
-    
-    var socket = io();
-    socket.on('connect', function() {
-        socket.emit('join_room', {
-            username:"{{username}}",
-            room: "{{room}}"
-        });
-    });
-</script>
-{% endblock %}
+<script type="text/javascript" charset="utf-8" src="{{ url_for('static', filename='socketio.js') }}"></script>
+
+
+{% endblock %} 

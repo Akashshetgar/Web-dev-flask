@@ -61,6 +61,7 @@ img{
 }
 .navElem:hover{
     animation: change 1s linear infinite;
+    text-decoration: none;
 }
 @keyframes change{
     0%{color: aliceblue;}
@@ -173,4 +174,47 @@ label{
 }
 .formLogo{
     height: 150px;
+}
+
+/* communities css*/
+.createBtn{
+    justify-content: center;
+    text-align: center;
+}
+
+.startChatBtn{
+    text-align: center;
+    font-family: 'BioRhyme', serif;
+    
+}
+.startChatBtn a{
+    text-decoration: none;
+    color: white;
+}
+
+/*chat css*/
+.community-cards{
+    margin-bottom: 5px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: large;
+    height: 40px;
+    border-radius: 20px;
+    padding-top: 5px;
+}
+.aloneText{
+    text-align: center;
+    font-family: 'BioRhyme', serif;
+    
+    color: aliceblue;
+}
+.aloneText a{
+    color: #fcda1a;
+    text-decoration: none;
+}
+.aloneImg{
+    justify-content: center;
+    height: 300px;
+    width: auto;
 }

@@ -1,0 +1,73 @@
+<style>
+  .modal-content {
+    background-color: #212121
+  }
+</style>
+
+  
+  
+  <!-- Create community model-->
+  <div class="modal fade" id="Modal-CreateCommunity-{{current_user.id}}"
+       tabindex="-1"
+       aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">
+            <!-- -->
+          </h5>
+          <button type="button" class="close"
+                  data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST">
+                {{ createForm.hidden_tag() }}
+                <h3 class="text-center" style="color: aliceblue;">
+                  create your own community
+                </h3>
+              
+                <div class="mb-3">
+                  {{createForm.community_name.label()}}
+                  {{createForm.community_name(class="form-control", placeholder="Rick Astley fanclub")}}
+                  
+                </div>
+                <div class="mb-3">
+                  {{createForm.community_description.label()}}
+                  {{createForm.community_description(class="form-control", placeholder="Never gonna give you up")}}
+                  <!-- <input type="password" class="form-control" id="password"> -->
+                </div>
+                <div class="mb-3">
+                  
+                  <input id="community_admin" name = "community_admin" type="hidden" value={{current_user.id}}>
+                  <!-- <input type="password" class="form-control" id="password"> -->
+                </div>
+                <br>
+                {% with messages = get_flashed_messages(with_categories = true) %}
+                  {% if messages %}
+                    {% for category,message in messages%}
+                      
+                      <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        </button>
+                      </div>
+                    {% endfor%}
+                  {% endif %}
+                {% endwith %}
+                
+                <br>
+                {{ createForm.create(class = "btn btn-primary btn-block") }}
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  data-dismiss="modal">Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 

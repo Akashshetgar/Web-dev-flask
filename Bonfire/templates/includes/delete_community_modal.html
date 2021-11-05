@@ -1,0 +1,43 @@
+<style>
+    .modal-content {
+      background-color: #212121
+    }
+</style>
+    
+    <!-- Delete community model-->
+    <div class="modal fade" id="Modal-DeleteCommunity-{{community.id}}"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title" id="ModalLabel">
+         <!-- -->
+       </h5>
+       <button type="button" class="close"
+               data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+         <form method="POST">
+             {{ deleteForm.hidden_tag() }}
+             <h3 class="text-center" style="color: aliceblue;">
+               Are you sure you want to delete {{ community.community_name }}?
+             </h3>
+           
+             <p class="text-center" style="color: aliceblue;">You are the administrator of this community. Leaving this community will delete the whole community.</p>
+             <br>
+             <br>
+             <input id="toBeDeleted" name="toBeDeleted" type="hidden" value= {{community.id}}>
+             {{ deleteForm.delete(class = "btn btn-danger btn-block") }}
+         </form>
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-secondary"
+               data-dismiss="modal">Close
+       </button>
+     </div>
+   </div>
+ </div>
+</div>

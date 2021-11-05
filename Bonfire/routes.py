@@ -1,12 +1,12 @@
 from flask.templating import DispatchingJinjaLoader
 from flask_login.utils import login_required
-import socketio
+from flask_socketio import send, emit, join_room, leave_room 
 from Bonfire import app, db, socketio
-from flask import render_template, url_for, redirect, flash,request
-from Bonfire.forms import RegistrationForm, LoginForm
+from flask import render_template, url_for, redirect, flash, request
+from Bonfire.forms import DeleteCommunityForm, JoinCommunityForm, LeaveCommunityForm, RegistrationForm, LoginForm, CreateCommunityForm
 from Bonfire.models import *
-from flask_login import login_user, logout_user
-from flask_socketio import SocketIO,send
+from flask_login import login_user, logout_user, current_user
+from time import localtime, strftime
 
 @app.route("/")
 @app.route("/home")
@@ -21,21 +21,57 @@ def contactPage():
 def featuresPage():
     return render_template("features.html")
 
-@app.route("/communities")
+@app.route("/communities", methods = ['GET','POST'])
 @login_required
 def communitiesPage():
-    allcmty = Communities.query.all()
-    return render_template("communities.html",communities=allcmty)
+    form = CreateCommunityForm()
+    deleteForm = DeleteCommunityForm()
+    leaveForm = LeaveCommunityForm()
+    joinForm = JoinCommunityForm()
+    user_communities = list(current_user.myCommunities)
 
-@app.route("/addcommunity",methods= ['GET','POST'])
-@login_required
-def addcommunity():
     if request.method=='POST':
-        check = Communities(community_name=request.form.get("c_name"))
-        db.session.add(check)
-        db.session.commit()
-        return redirect(url_for('communitiesPage'))
-    return render_template("addcommunity.html")
+        if form.validate_on_submit():
+            created_community = Communities(form.community_name.data, form.community_description.data, form.community_admin.data)
+            created_community.members.append(current_user)
+            db.session.add(created_community)
+            db.session.commit()
+            return redirect(url_for('communitiesPage'))
+
+        if deleteForm.validate_on_submit():
+            deleteById = deleteForm.toBeDeleted.data
+            # address_table = user_identifier('address', metadata, autoload=True)
+            addresses = db.session.query(user_identifier).filter(user_identifier.c.c_id == deleteById)
+            addresses.delete(synchronize_session=False)
+            db.session.commit()
+            delcomm = Communities.query.filter_by(id = deleteById).first()
+            # print("\n\n\nprinted ",deleteById)
+            if delcomm:
+                db.session.delete(delcomm)
+                db.session.commit()
+        
+        if joinForm.validate_on_submit():
+            communityId = joinForm.toBeAdded.data
+            community = Communities.query.filter_by(id = communityId).first()
+            community.members.append(current_user)
+            db.session.commit()
+            return redirect(url_for('communitiesPage'))
+
+        if leaveForm.validate_on_submit():
+            leaveById = leaveForm.toBeLeft.data
+            remRel = db.session.query(user_identifier).filter(user_identifier.c.c_id == leaveById)
+            remRel.delete(synchronize_session=False)
+            db.session.commit()
+            return redirect(url_for('communitiesPage'))
+
+        if form.errors != {}:
+            for error_msg in form.errors.values():
+                flash(f'Error occured: {error_msg}',category= 'danger')
+        
+    if request.method=='GET':
+        allcmty = Communities.query.all()
+        return render_template("communities.html", communities=allcmty, createForm = form,user_communities = user_communities, cur_usr = current_user, deleteForm = deleteForm, leaveForm = leaveForm, joinForm = joinForm )
+
 
 
 @app.route("/register", methods = ['GET','POST'])
@@ -47,7 +83,7 @@ def registerPage():
         db.session.commit()
         login_user(created_user)
         flash(f'You are logged in as {created_user.username}')
-        return redirect(url_for('homePage'))
+        return redirect(url_for('chat'))
     if form.errors != {}:
         for error_msg in form.errors.values():
             flash(f'Please fill the form correctly: {error_msg}',category= 'danger')
@@ -60,8 +96,7 @@ def loginPage():
         attempted_user = User.query.filter_by(username = form.username.data).first()
         if attempted_user and attempted_user.checkpswrd(form.password.data):
             login_user(attempted_user)
-            flash(f'Logged in as {attempted_user.username}', category= 'success')
-            return redirect(url_for('homePage'))
+            return redirect(url_for('chat'))
         else:
             flash('Username and password do not match', category= 'danger')
 
@@ -72,12 +107,34 @@ def logoutPage():
     logout_user()
     return redirect(url_for("homePage"))
 
+
+# @app.route("/chat/<int:no>")
+# def chat(no):
+#     chat_community = Communities.query.filter_by(id=no).first()
+#     return render_template("chat1.html",ch_no=chat_community)
+
+@app.route("/chat", methods=['GET', 'POST'])
+@login_required
+def chat():
+    user_communities = list(current_user.myCommunities)
+
+    # if not current_user.is_authenticated:
+    #     flash('Please login', 'danger')
+    #     return redirect(url_for('login'))
+
+    return render_template('chat.html', username = current_user.username, user_communities = user_communities)
+
 @socketio.on('message')
 def message(data):
-    print(f"\n\n{data}\n\n")
-    send(data)
+    # print("hello")
+    send({'msg': data['msg'], 'username': data['username'], 'time_stamp': strftime('%H:%M %d-%m-%Y', localtime())}, room = data['room'])
+    
+@socketio.on('join')
+def join(data):
+    join_room(data['room'])  
+    send({'msg': data['username'] + " has joined this community"}, room = data['room'])
 
-@app.route("/chat/<int:no>")
-def chat(no):
-    chat_community = Communities.query.filter_by(id=no).first()
-    return render_template("chat1.html",ch_no=chat_community)
+@socketio.on('leave')
+def leave(data):
+    leave_room(data['room'])  
+    send({'msg': data['username'] + " has left this community"}, room = data['room'])

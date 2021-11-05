@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_socketio import SocketIO,send
-import socketio
 
 app = Flask(__name__)
 socketio = SocketIO(app)
