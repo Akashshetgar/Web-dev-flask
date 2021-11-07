@@ -6,7 +6,11 @@
   <div class = "mainText">
     <p class = 'mainTextHeading'>Create and Join your favourite community</p>
     <div class="loginButton">
+      {% if current_user.is_authenticated %}
+      <button type="button" class="btn btn-outline-warning btn-lg"><a href="{{ url_for('chat') }}"">Chat</a></button>
+      {% else %}
       <button type="button" class="btn btn-outline-warning btn-lg"><a href="{{ url_for('loginPage') }}"">Login</a></button>
+      {% endif %}
     </div>
     <br>
     <p class="mainTextBody"> text line 1</p>

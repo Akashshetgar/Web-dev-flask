@@ -8,22 +8,26 @@ from Bonfire.models import *
 from flask_login import login_user, logout_user, current_user
 from time import localtime, strftime
 
-@app.route("/")
+@app.route("/")        # Home Page
 @app.route("/home")
 def homePage():
     return render_template("home.html")
 
-@app.route("/contact")
+@app.route("/about")    # About Section
+def about():
+    return render_template("about.html")
+
+@app.route("/contact")    # Contact Section
 def contactPage():
     return render_template("contact.html")
 
-@app.route("/features")
+@app.route("/features")   # features
 def featuresPage():
     return render_template("features.html")
 
 @app.route("/communities", methods = ['GET','POST'])
 @login_required
-def communitiesPage():
+def communitiesPage():                
     form = CreateCommunityForm()
     deleteForm = DeleteCommunityForm()
     leaveForm = LeaveCommunityForm()
@@ -75,10 +79,10 @@ def communitiesPage():
 
 
 @app.route("/register", methods = ['GET','POST'])
-def registerPage():
+def registerPage():           # Registering of Users
     form = RegistrationForm()
     if form.validate_on_submit():
-        created_user = User(form.username.data,form.email.data,form.password.data)
+        created_user = User(form.username.data,form.email.data,form.password.data) # Registration Form
         db.session.add(created_user)
         db.session.commit()
         login_user(created_user)
@@ -90,7 +94,7 @@ def registerPage():
     return render_template("register.html", regForm = form)
 
 @app.route("/login",methods = ['GET', 'POST'])
-def loginPage():
+def loginPage():        # Log-in for Users
     form = LoginForm()
     if form.validate_on_submit():
         attempted_user = User.query.filter_by(username = form.username.data).first()
@@ -103,15 +107,11 @@ def loginPage():
     return render_template('login.html', logForm =form)
 
 @app.route("/logout")
-def logoutPage():
+def logoutPage():  # Log-out for Users
     logout_user()
     return redirect(url_for("homePage"))
 
 
-# @app.route("/chat/<int:no>")
-# def chat(no):
-#     chat_community = Communities.query.filter_by(id=no).first()
-#     return render_template("chat1.html",ch_no=chat_community)
 
 @app.route("/chat", methods=['GET', 'POST'])
 @login_required
@@ -138,3 +138,18 @@ def join(data):
 def leave(data):
     leave_room(data['room'])  
     send({'msg': data['username'] + " has left this community"}, room = data['room'])
+
+@app.errorhandler(404)     # Handling 404 error
+def invalid_route(e): 
+    return render_template("404error.html")
+
+@app.route('/cnt', methods = ['GET','POST'])
+def contact():        # Contact Us 
+    if request.method=="POST":
+        email = request.form['c-mail']
+        mess = request.form['c-message']
+        obj = ContactMess(email,mess)
+        db.session.add(obj)
+        db.session.commit()
+    return redirect(url_for('contactPage'))
+

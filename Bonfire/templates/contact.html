@@ -3,14 +3,42 @@
   Contact Us
 {% endblock %}
 {% block content %}
-<br><br><br>
+<button type="button" class="btn btn-primary xxbtn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"><h3>Contact Us</h3></button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="color: black;" id="exampleModalLabel">New message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ url_for('contact') }}" method="post">
+          <div class="mb-3">
+            <label for="recipient-name" style="color: black;" class="col-form-label">Email:</label>
+            <input type="email" class="form-control" id="recipient-name" name="c-mail">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" style="color: black;" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text" name="c-message"></textarea>
+          </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary sendbtn" data-bs-dismiss="modal">Send message</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div><br><br>
   <div class="contact">
-      <h1>Contact Us</h1>
+      <h1>Social Media Handles</h1>
+      
       <div class="link-content">
-        <a href="https://www.instagram.com/aaayussshhh_/" class="link">Instagram</a> <br>
-        <a href="https://www.linkedin.com/in/aayush-pandey-b6b349210/" class="link">Linkedin</a> <br>
-        <a href="https://www.youtube.com/" class="link">Youtube</a> <br>
-        <a href="mailto: aayushpandey2018@gmail.com" class="link">Gmail</a> <br>
+        <a href="https://www.instagram.com/aaayussshhh_/" class="link"><i class="fab fa-instagram" style="margin-right: 10px;"></i>Instagram</a> <br>
+        <a href="https://www.linkedin.com/in/aayush-pandey-b6b349210/" class="link"><i class="fab fa-linkedin-in" style="margin-right: 10px;"></i>Linkedin</a> <br>
+        <a href="https://www.youtube.com/" class="link"><i class="fab fa-youtube" style="margin-right: 10px;"></i>Youtube</a> <br>
+        <a href="mailto: aayushpandey2018@gmail.com" class="link"><i class="fas fa-envelope" style="margin-right: 10px;"></i>Gmail</a> <br>
       </div>
   </div>
 {% endblock %}

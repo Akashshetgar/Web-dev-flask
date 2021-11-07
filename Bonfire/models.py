@@ -54,3 +54,12 @@ class Message(db.Model):
     time_posted = db.Column(db.String(length = 30))
     name = db.Column(db.String(length = 100), default='')
     content = db.Column(db.String(length = 500), default='')  
+
+class ContactMess(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    mess_mail = db.Column(db.String(length = 100))
+    mess_text = db.Column(db.String(length = 500))
+
+    def __init__(self,mail,mess):
+        self.mess_mail = mail 
+        self.mess_text = mess

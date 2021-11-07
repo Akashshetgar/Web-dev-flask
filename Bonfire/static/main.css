@@ -120,8 +120,12 @@ footer{
     color: antiquewhite;
 }
 .footerIcon{
+    font-size: 30px;
     padding:20px;
     color:aliceblue
+}
+.xxbtn{
+    margin-left: 560px;
 }
 
 
@@ -217,4 +221,51 @@ label{
     justify-content: center;
     height: 300px;
     width: auto;
+}
+
+
+
+body{
+	margin: 0;
+	padding: 0;
+	font-family: "montserrat",sans-serif;
+	min-height: 100vh;
+	background-image: linear-gardient(125deg,#6a89cc,#b8e994)
+	}
+
+.containerx{
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	transform: translater(-50%);
+	text-align: center;
+	color: #343434
+	}
+.containerx h1{
+	font-size: 160px;
+	margin: 0;
+	font-height: 900;
+	letter-spacing: 20px;
+	background: url(bg.jpg) center no-repeat;
+	-webkit-text-fill-colour: transparent;
+	-webkit-background--clip: text;
+	}
+.containerx a {
+	text-decoration: none;
+	background: #e55039aa;
+	color: #fff;
+	padding: 12px 24px;
+	display: inline-block;
+	border-radius: 25px;
+	font-size: 14px;
+	text-transform: upparcase;
+	transition: 0.4s;
+	}
+.containerx a:hover{
+	background: #e55039
+}
+.about-us{
+    color: white;
+    padding: 15px 50px;
+    font-size: x-large;
 }
