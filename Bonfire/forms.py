@@ -6,7 +6,9 @@ from wtforms.fields.simple import SubmitField
 from wtforms.validators import Length,DataRequired,Email,EqualTo, ValidationError
 from Bonfire.models import User
 
+
 class RegistrationForm(FlaskForm):
+    #checking if username and email already exists in the database
     def validate_username(self,check_username):
         user = User.query.filter_by(username = check_username.data).first()
         if user:

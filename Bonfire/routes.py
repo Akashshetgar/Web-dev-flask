@@ -35,6 +35,7 @@ def communitiesPage():
     user_communities = list(current_user.myCommunities)
 
     if request.method=='POST':
+        #creating a community
         if form.validate_on_submit():
             created_community = Communities(form.community_name.data, form.community_description.data, form.community_admin.data)
             created_community.members.append(current_user)
@@ -42,6 +43,7 @@ def communitiesPage():
             db.session.commit()
             return redirect(url_for('communitiesPage'))
 
+        #deleting a community
         if deleteForm.validate_on_submit():
             deleteById = deleteForm.toBeDeleted.data
             # address_table = user_identifier('address', metadata, autoload=True)
@@ -54,6 +56,7 @@ def communitiesPage():
                 db.session.delete(delcomm)
                 db.session.commit()
         
+        #joining a community
         if joinForm.validate_on_submit():
             communityId = joinForm.toBeAdded.data
             community = Communities.query.filter_by(id = communityId).first()
@@ -61,6 +64,7 @@ def communitiesPage():
             db.session.commit()
             return redirect(url_for('communitiesPage'))
 
+        #leaving a community
         if leaveForm.validate_on_submit():
             leaveById = leaveForm.toBeLeft.data
             remRel = db.session.query(user_identifier).filter(user_identifier.c.c_id == leaveById)
@@ -68,6 +72,7 @@ def communitiesPage():
             db.session.commit()
             return redirect(url_for('communitiesPage'))
 
+        #flash error messages
         if form.errors != {}:
             for error_msg in form.errors.values():
                 flash(f'Error occured: {error_msg}',category= 'danger')
@@ -111,22 +116,31 @@ def logoutPage():  # Log-out for Users
     logout_user()
     return redirect(url_for("homePage"))
 
-
+@app.route('/cnt', methods = ['GET','POST'])
+def contact():        # Contact Us 
+    if request.method=="POST":
+        email = request.form['c-mail']
+        mess = request.form['c-message']
+        obj = ContactMess(email,mess)
+        db.session.add(obj)
+        db.session.commit()
+    return redirect(url_for('contactPage'))
 
 @app.route("/chat", methods=['GET', 'POST'])
 @login_required
-def chat():
+def chat(): #chatting page
     user_communities = list(current_user.myCommunities)
-
-    # if not current_user.is_authenticated:
-    #     flash('Please login', 'danger')
-    #     return redirect(url_for('login'))
 
     return render_template('chat.html', username = current_user.username, user_communities = user_communities)
 
-@socketio.on('message')
+@app.errorhandler(404)     # Handling 404 error
+def invalid_route(e): 
+    return render_template("404error.html")
+
+
+#server side event handlers(named(predefined) events)
+@socketio.on('message') 
 def message(data):
-    # print("hello")
     send({'msg': data['msg'], 'username': data['username'], 'time_stamp': strftime('%H:%M %d-%m-%Y', localtime())}, room = data['room'])
     
 @socketio.on('join')
@@ -139,17 +153,6 @@ def leave(data):
     leave_room(data['room'])  
     send({'msg': data['username'] + " has left this community"}, room = data['room'])
 
-@app.errorhandler(404)     # Handling 404 error
-def invalid_route(e): 
-    return render_template("404error.html")
 
-@app.route('/cnt', methods = ['GET','POST'])
-def contact():        # Contact Us 
-    if request.method=="POST":
-        email = request.form['c-mail']
-        mess = request.form['c-message']
-        obj = ContactMess(email,mess)
-        db.session.add(obj)
-        db.session.commit()
-    return redirect(url_for('contactPage'))
+
 

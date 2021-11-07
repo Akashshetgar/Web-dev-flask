@@ -8,11 +8,13 @@ from flask_login import UserMixin
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+#table to store many to many relations
 user_identifier = db.Table('user_identifier',
     db.Column('c_id', db.Integer, db.ForeignKey('communities.id')),
     db.Column('u_id', db.Integer, db.ForeignKey('users.id'))
 )
 
+#user model
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer(),primary_key = True)
@@ -20,7 +22,6 @@ class User(db.Model, UserMixin):
     emailId = db.Column(db.String(length = 50), nullable = False, unique = True)
     password_hash = db.Column(db.String(length = 64), nullable = False)
     
-
     def __init__(self, username, emailId, password):
         self.username = username
         self.emailId = emailId
@@ -32,6 +33,7 @@ class User(db.Model, UserMixin):
     def checkpswrd(self, attempted_pswrd):
         return bcrypt.check_password_hash(self.password_hash,attempted_pswrd)
 
+#community model
 class Communities(db.Model):
     __tablename__ = "communities"
     id = db.Column(db.Integer, primary_key=True)
@@ -45,16 +47,7 @@ class Communities(db.Model):
         self.community_description = community_description
         self.community_admin = community_admin
 
-
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    community_name = db.Column(db.String(length = 100))
-    channel_name = db.Column(db.String(length = 100))
-    date_posted = db.Column(db.String(length = 30))
-    time_posted = db.Column(db.String(length = 30))
-    name = db.Column(db.String(length = 100), default='')
-    content = db.Column(db.String(length = 500), default='')  
-
+#contact form model
 class ContactMess(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     mess_mail = db.Column(db.String(length = 100))

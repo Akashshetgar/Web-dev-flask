@@ -31,10 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     'username': username,
                     'room' : room
                 });
-
+        //Make text box empty after clicking send
         document.querySelector('#user_message').value = "";
     };
 
+    //selecting a room from options
     document.querySelectorAll('#room_select').forEach(p => {
         p.onclick = () => {
             let newRoom = p.innerHTML;
@@ -69,9 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function joinRoom(room){
         socket.emit('join', {'username': username, 'room': room});
+        //clear old text after joining new room
         document.querySelector('#display-message-section').innerHTML = "";
     }
-
+    // print message to text area
     function printSysMsg(msg){
         const p = document.createElement('p');
         p.innerHTML = msg;
@@ -79,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showGrpName(msg){
-        
+
         document.querySelector('#grpName').append(msg);
     }
 

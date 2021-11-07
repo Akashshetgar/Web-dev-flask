@@ -36,12 +36,10 @@
                 <div class="mb-3">
                   {{createForm.community_description.label()}}
                   {{createForm.community_description(class="form-control", placeholder="Never gonna give you up")}}
-                  <!-- <input type="password" class="form-control" id="password"> -->
                 </div>
                 <div class="mb-3">
                   
                   <input id="community_admin" name = "community_admin" type="hidden" value={{current_user.id}}>
-                  <!-- <input type="password" class="form-control" id="password"> -->
                 </div>
                 <br>
                 {% with messages = get_flashed_messages(with_categories = true) %}
