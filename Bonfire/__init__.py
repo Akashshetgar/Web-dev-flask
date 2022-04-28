@@ -7,7 +7,7 @@ from flask_socketio import SocketIO,send
 
 app = Flask(__name__)
 socketio = SocketIO(app)
-app.config['SECRET_KEY'] = 'e702ae853a110c6e239a8be9'
+app.config['SECRET_KEY'] = 'pls-change-dis'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///BonfireDB.db'
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
